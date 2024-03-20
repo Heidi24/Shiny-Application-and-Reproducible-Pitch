@@ -1,0 +1,58 @@
+---
+title: "Reproducible Pitch: BMI"
+author: "Heidi Tang"
+date: "March 20, 2024"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+- According to the World Health Organization (WHO), BMI is defined as body weight of a person in kg. divided by the square of the corresponding height in metres (kg/m2) ([WHO, 2010](https://www.who.int/europe/news-room/fact-sheets/item/a-healthy-lifestyle---who-recommendations#:~:text=Body%20mass%20index%20%2D%20BMI&text=It%20is%20defined%20as%20a,1.752%20(m2)%20%3D%2022.9%20BMI)).
+- This Reproducible Pitch focuses on the calculation of BMI, given a person's height and weight.
+
+## BMI: ui.R Code
+```{r}
+library(shiny)
+
+shinyUI(fluidPage(  
+    titlePanel("Shiny Application: BMI Calculation"),
+    sidebarLayout(
+        sidebarPanel(
+          h1("Height"),
+          sliderInput("ht", "Please slide to your height value in cm.", 20, 280, 0),
+          h1("Weight"),
+          sliderInput("wt", "Please slide to your weight value in kg.", 0.2, 650, 0)
+        ),
+        mainPanel(
+          h3("BMI"),
+          textOutput("bmi")
+        )
+    )
+))
+```
+
+## BMI: HTML Link for Server Calculation
+```{r}
+library(shiny)
+
+BMI = function(height,weight){
+  return(100^2*(weight/(height)^2))
+}
+
+shinyServer(function(input, output) {
+  
+        output$bmi = renderText({BMI(input$ht, input$wt)})
+
+})
+```
+
+- Link for BMI Calculation: [Click Me For Your Health!](http://127.0.0.1:7847/)
+
+## BMI: A Example
+
+- If a women were 170 cm high and weighed 52 kg, then her BMI were:
+
+   # BMI(ht=1.7m, wt=52kg) = 52/(1.7)^2 = 17.99308
